@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: klaus-md-bot
+    runtime: node
+    plan: free
+    region: singapore
+    branch: main
+    rootDir: .
+    buildCommand: npm install
+    startCommand: node server.js
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: BOT_NAME
+        value: KLAUS-MD
+      - key: OWNER_NUMBER
+        value: '254711815459'
+      # Set GEMINI_API_KEY in Render dashboard → Environment tab.
+      # Get a free key from https://aistudio.google.com/apikey
+      # NOTE: Gemini is blocked in some regions (e.g. Africa) —
+      # the bot auto-falls back to local pattern matching if so.
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: SUPPORT_GROUP_INVITE
+        value: CEzNfBdOYHj6pWzWOrgISb

@@ -1,0 +1,211 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600" width="1200" height="600">
+  <defs>
+    <!-- Aura radial glow around the boy -->
+    <radialGradient id="boyAura" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#4ade80;stop-opacity:0.9" />
+      <stop offset="40%" style="stop-color:#22c55e;stop-opacity:0.6" />
+      <stop offset="80%" style="stop-color:#16a34a;stop-opacity:0.2" />
+      <stop offset="100%" style="stop-color:#000;stop-opacity:0" />
+    </radialGradient>
+
+    <!-- Text gradient — green to emerald -->
+    <linearGradient id="textGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#4ade80;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#22c55e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#86efac;stop-opacity:1" />
+    </linearGradient>
+
+    <!-- Heart gradient -->
+    <linearGradient id="heartGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f87171;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#dc2626;stop-opacity:1" />
+    </linearGradient>
+
+    <!-- Body gradient (skin tone) -->
+    <linearGradient id="skinGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#d4a373;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#a16207;stop-opacity:1" />
+    </linearGradient>
+
+    <!-- Hoodie gradient -->
+    <linearGradient id="hoodieGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#22c55e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16a34a;stop-opacity:1" />
+    </linearGradient>
+
+    <!-- Glow filter -->
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="6" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <filter id="bigGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="15" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background — dark gradient -->
+  <rect width="1200" height="600" fill="#000000"/>
+
+  <!-- Background ambient glow -->
+  <rect width="1200" height="600" fill="url(#boyAura)" opacity="0.3"/>
+
+  <!-- Subtle star field -->
+  <g fill="white" opacity="0.5">
+    <circle cx="100" cy="80" r="1"/>
+    <circle cx="250" cy="120" r="0.8"/>
+    <circle cx="450" cy="60" r="1.2"/>
+    <circle cx="800" cy="100" r="1"/>
+    <circle cx="950" cy="150" r="0.8"/>
+    <circle cx="1100" cy="80" r="1"/>
+    <circle cx="150" cy="500" r="0.8"/>
+    <circle cx="400" cy="540" r="1"/>
+    <circle cx="700" cy="520" r="0.8"/>
+    <circle cx="1050" cy="500" r="1.2"/>
+  </g>
+
+  <!-- ==== BOY WITH AURA (centered, left side) ==== -->
+
+  <!-- Aura glow behind boy -->
+  <circle cx="350" cy="300" r="180" fill="url(#boyAura)" filter="url(#bigGlow)">
+    <animate attributeName="opacity" values="0.7;1;0.7" dur="3s" repeatCount="indefinite"/>
+  </circle>
+
+  <!-- Aura rays around boy -->
+  <g opacity="0.6" filter="url(#glow)">
+    <line x1="350" y1="100" x2="350" y2="140" stroke="#4ade80" stroke-width="3"/>
+    <line x1="350" y1="460" x2="350" y2="500" stroke="#4ade80" stroke-width="3"/>
+    <line x1="170" y1="300" x2="210" y2="300" stroke="#4ade80" stroke-width="3"/>
+    <line x1="490" y1="300" x2="530" y2="300" stroke="#4ade80" stroke-width="3"/>
+    <line x1="220" y1="170" x2="245" y2="195" stroke="#4ade80" stroke-width="3"/>
+    <line x1="455" y1="405" x2="480" y2="430" stroke="#4ade80" stroke-width="3"/>
+    <line x1="220" y1="430" x2="245" y2="405" stroke="#4ade80" stroke-width="3"/>
+    <line x1="455" y1="195" x2="480" y2="170" stroke="#4ade80" stroke-width="3"/>
+  </g>
+
+  <!-- Boy silhouette (stylized, hooded figure — like an aura/anime boy) -->
+
+  <!-- Hoodie outline (large cloak) -->
+  <path d="M 250 380
+           Q 250 320 280 290
+           L 290 250
+           Q 290 220 320 200
+           L 380 200
+           Q 410 220 410 250
+           L 420 290
+           Q 450 320 450 380
+           L 450 460
+           L 250 460 Z"
+        fill="url(#hoodieGrad)"
+        stroke="#0a1f0a"
+        stroke-width="2"
+        filter="url(#glow)"/>
+
+  <!-- Hood opening shadow -->
+  <ellipse cx="350" cy="260" rx="40" ry="55" fill="#000000" opacity="0.6"/>
+
+  <!-- Face (head shape) -->
+  <ellipse cx="350" cy="270" rx="32" ry="40" fill="url(#skinGrad)"/>
+
+  <!-- Hair (anime-style spiky) -->
+  <path d="M 318 250
+           L 322 230
+           L 330 245
+           L 335 220
+           L 345 240
+           L 350 215
+           L 360 235
+           L 370 220
+           L 375 245
+           L 380 230
+           L 382 250
+           Q 382 260 350 260
+           Q 318 260 318 250 Z"
+        fill="#1f2937"/>
+
+  <!-- Eyes (closed/calm — anime style) -->
+  <ellipse cx="338" cy="272" rx="3" ry="4" fill="#000"/>
+  <ellipse cx="362" cy="272" rx="3" ry="4" fill="#000"/>
+
+  <!-- Subtle smile -->
+  <path d="M 342 285 Q 350 290 358 285" stroke="#000" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+
+  <!-- Aura particles floating around the boy -->
+  <g fill="#4ade80" opacity="0.8">
+    <circle cx="220" cy="220" r="2">
+      <animate attributeName="cy" values="220;200;220" dur="3s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.4;1;0.4" dur="3s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="480" cy="240" r="1.5">
+      <animate attributeName="cy" values="240;220;240" dur="4s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.4;1;0.4" dur="4s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="200" cy="380" r="2">
+      <animate attributeName="cy" values="380;360;380" dur="3.5s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.4;1;0.4" dur="3.5s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="500" cy="400" r="1.5">
+      <animate attributeName="cy" values="400;380;400" dur="4.5s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.4;1;0.4" dur="4.5s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+
+  <!-- ==== TEXT: BOBOH ❤️ YOBBY MD (right side) ==== -->
+
+  <!-- BOBOH -->
+  <text x="650" y="260"
+        font-family="Arial Black, Arial, sans-serif"
+        font-size="90" font-weight="900"
+        fill="url(#textGrad)"
+        filter="url(#glow)"
+        letter-spacing="-2">BOBOH</text>
+
+  <!-- Heart -->
+  <g transform="translate(640, 290)">
+    <path d="M 50 20
+             C 50 10, 35 0, 25 0
+             C 10 0, 0 15, 0 25
+             C 0 45, 25 60, 50 75
+             C 75 60, 100 45, 100 25
+             C 100 15, 90 0, 75 0
+             C 65 0, 50 10, 50 20 Z"
+          fill="url(#heartGrad)"
+          filter="url(#glow)"
+          transform="translate(0,0) scale(1.2)">
+      <animateTransform attributeName="transform" type="scale" values="1.2;1.3;1.2" dur="1.5s" repeatCount="indefinite"/>
+    </path>
+  </g>
+
+  <!-- YOBBY MD -->
+  <text x="650" y="430"
+        font-family="Arial Black, Arial, sans-serif"
+        font-size="90" font-weight="900"
+        fill="url(#textGrad)"
+        filter="url(#glow)"
+        letter-spacing="-2">YOBBY MD</text>
+
+  <!-- Subtitle -->
+  <text x="650" y="480"
+        font-family="Arial, sans-serif"
+        font-size="24" font-weight="600"
+        fill="#86efac"
+        opacity="0.8"
+        letter-spacing="4">⚡ MULTI-FEATURE WHATSAPP BOT ⚡</text>
+
+  <!-- Bottom decorative line -->
+  <line x1="650" y1="510" x2="1150" y2="510" stroke="#22c55e" stroke-width="2" opacity="0.5"/>
+
+  <!-- Version -->
+  <text x="650" y="540"
+        font-family="Arial, sans-serif"
+        font-size="16"
+        fill="#4ade80"
+        opacity="0.6">Version 2.0.0 • Powered by Baileys</text>
+</svg>

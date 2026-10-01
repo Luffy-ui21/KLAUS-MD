@@ -1,0 +1,36 @@
+{
+  "name": "klaus-md",
+  "version": "1.0.0",
+  "description": "KLAUS-MD - Premium WhatsApp bot with pairing code, multi-user, anti-commands. Powered by KLAUS - NIK.ola. Owner: +254711815459. No session limit.",
+  "main": "server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "@whiskeysockets/baileys": "^6.6.0",
+    "axios": "^1.7.2",
+    "body-parser": "^1.20.2",
+    "cheerio": "^1.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "form-data": "^4.0.6",
+    "pino": "^9.3.2",
+    "sharp": "^0.35.4"
+  },
+  "keywords": [
+    "whatsapp",
+    "bot",
+    "baileys",
+    "klaus-md",
+    "klaus-nikola",
+    "pairing-code",
+    "multi-user"
+  ],
+  "author": "KLAUS - NIK.ola",
+  "license": "MIT"
+}
