@@ -2,7 +2,14 @@
   "name": "klaus-md",
   "description": "KLAUS-MD — custom WhatsApp Bot with AI chat (ChatGPT/Gemini/Claude) and auto-session authentication",
   "logo": "https://i.ibb.co/zWGkw7Jz/767022de0778.png",
-  "keywords": ["whatsapp", "bot", "custom", "baileys", "session", "ai"],
+  "keywords": [
+    "whatsapp",
+    "bot",
+    "custom",
+    "baileys",
+    "session",
+    "ai"
+  ],
   "repository": "https://github.com/Luffy-ui21/KLAUS-MD.git",
   "scripts": {
     "start": "node --no-warnings --experimental-global-webcrypto index.js"
