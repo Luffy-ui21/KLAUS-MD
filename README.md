@@ -8,6 +8,40 @@
 
 ---
 
+## 🟣 Deploy on Heroku (Easiest Path)
+
+**One-click deploy button** — click below and Heroku will pre-fill everything from `app.json`:
+
+[![Deploy to Heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/Luffy-ui21/KLAUS-MD)
+
+When the Heroku setup page opens:
+1. **App name:** something unique like `klaus-md-bot-yourname` (lowercase, no spaces)
+2. **Region:** choose the one closest to you (United States or Europe)
+3. The **Config Vars** section is already pre-filled with defaults — you only need to fill in `SESSION_ID` later (after first pairing).
+4. Click **Deploy App** → wait ~3-5 minutes for buildpacks to install (Node.js + ffmpeg + webp)
+5. Once deployed, click **View App** → you'll see a 404 page (that's normal — the bot doesn't serve a public website)
+6. Go to **More → View Logs** in the top-right dropdown
+7. The bot will print a pairing menu in the logs → choose option 1 → enter your phone number
+8. You'll get an 8-character pairing code → open WhatsApp on your phone → Settings → Linked Devices → Link with phone number → enter code
+9. After pairing, the bot will print a `SESSION_ID=KLAUS-MD:eyJ...` string in the logs
+10. Copy that string → go to **Settings → Config Vars** in Heroku → add/edit `SESSION_ID` with that value → Save
+11. Restart the dyno (**More → Restart dyno**)
+
+Your bot is now live! Type `.menu` in WhatsApp to see all commands.
+
+**⚠️ Heroku free tier gotchas:**
+- Free dynos sleep after 30 min of no web traffic — but since WhatsApp keeps the WebSocket open with keep-alive pings, the dyno usually stays awake while the bot is connected. If it does sleep, the bot will auto-reconnect on the first message.
+- Free tier = 550 dyno hours/month. For 24/7 uptime, you'll need to either (a) upgrade to Eco/Essential dynos ($5/month), or (b) use a second Heroku app or external pinger to keep it awake.
+- Heroku's filesystem is ephemeral — local SQLite data is wiped on every restart. For persistent settings/sessions across restarts, attach a Heroku Postgres add-on and set `DATABASE_URL`. The bot will auto-detect it.
+
+**Manual alternative** (instead of the one-click button):
+1. `heroku create klaus-md-bot-yourname`
+2. `heroku git:remote -a klaus-md-bot-yourname`
+3. `git push heroku main`
+4. `heroku addons:create heroku-postgresql:essential-0 --app klaus-md-bot-yourname` *(optional, for DB persistence)*
+
+---
+
 ## 🚀 Quick Deploy on Render (Docker-based)
 
 This bot ships with a `Dockerfile` and `render.yaml` already configured. Render will use them automatically.
