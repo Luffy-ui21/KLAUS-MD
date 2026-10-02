@@ -1,0 +1,8 @@
+[phases.setup]
+nixPkgs = ["nodejs_20", "python3", "gnumake", "gcc"]
+
+[phases.install]
+cmds = ["npm install"]
+
+[start]
+cmd = "node --no-warnings --expose-gc --max-old-space-size=1024 --experimental-global-webcrypto index.js"

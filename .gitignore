@@ -1,44 +1,63 @@
-# Dependencies
 node_modules/
 package-lock.json
-yarn.lock
-
-# Environment
-.env
-.env.local
-.env.production
-
-# Auth state (sensitive — WhatsApp session)
-auth_state/
-auth_state_*/
-*.session
-*.auth
-
-# Prisma database
-prisma/*.db
-prisma/*.db-journal
-prisma/boboh.db
-prisma/migrations/
-
-# User-uploaded DPs
-public/dp/
-
-# Anti-command DBs (per-group settings — user-generated)
-anti_link_db.json
-anti_bot_db.json
-welcome_db.json
-
-# Logs
 *.log
-npm-debug.log*
+*.db
+.env
+session/
+auth_info_baileys/
+auth_info/
+temp/
+tmp/
+*.session
+bot_restart.log
+owner.json
+bot_mode.json
+bot_settings.json
+bot_button_mode.json
+bot_channel_mode.json
+bot_owner_contact.json
+session_migrated_backup/
+bot_name.json
+prefix_config.json
+lid_mappings.json
+sticker_config.json
+stickers_packs.json
+collected_stickers.json
+antiaudio.json
+anticall.json
+antigrouplink.json
+antiimage.json
+antilink.json
+antimention.json
+antisticker.json
+antivideo.json
+autoread_settings.json
+disp_settings.json
+data/
+last_bot_id.json
+viewonce_downloads/
+viewonce_stealth/
+collected_stickers/
+sticker_packs/
+temp_stickers/
+temp_url_uploads/
+logs/
+attached_assets/
+mysettings.json
+.npm/
+index_launcher.zip
+launcher.js
+.bkp/
+.bmod/
+.bsrc
+.bx.py
+bot/
+.bot_run.js
+blocked_users.json
+group.json
 
-# OS files
-.DS_Store
-Thumbs.db
+# Local runtime and agent state
+.session_id_hash
+.session_revoked
+.agents/
 
-# IDE
-.vscode/
-.idea/
-
-# Vercel
-.ver/

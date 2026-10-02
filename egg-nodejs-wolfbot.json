@@ -1,0 +1,54 @@
+{
+    "_comment": "DO NOT EDIT: FILE GENERATED AUTOMATICALLY BY PTERODACTYL PANEL - PTERODACTYL.IO",
+    "meta": {
+        "version": "PTDL_v1"
+    },
+    "exported_at": "2024-01-01T00:00:00+00:00",
+    "name": "Node.js - Generic Bot",
+    "author": "admin@xwolf.space",
+    "description": "Generic Node.js egg. Installs dependencies on every startup then runs the bot.",
+    "image": "ghcr.io\/parkervcp\/yolks:nodejs_20",
+    "startup": "if [[ -f \/home\/container\/package.json ]]; then \/usr\/local\/bin\/npm install 2>\/dev\/null; fi; \/usr\/local\/bin\/node --no-warnings --expose-gc --max-old-space-size={{MAX_RAM}} \/home\/container\/{{BOT_JS_FILE}}",
+    "config": {
+        "files": "{}",
+        "startup": "{\"done\": \"$\"}",
+        "logs": "{}",
+        "stop": "^C"
+    },
+    "scripts": {
+        "installation": {
+            "script": "#!\/bin\/bash\n\napt-get update -y\napt-get install -y git curl python3 make g++ ffmpeg\n\ncd \/mnt\/server\n\nif [ -z \"${GIT_REPO}\" ]; then\n  echo \"No GIT_REPO set. Skipping clone. Upload files manually.\"\nelse\n  if [ -z \"$(ls -A \/mnt\/server)\" ]; then\n    git clone ${GIT_REPO} .\n    echo \"Cloned ${GIT_REPO} successfully.\"\n  else\n    echo \"Files already present, skipping clone.\"\n  fi\nfi\n\nif [ -f package.json ]; then\n  echo \"Installing all dependencies...\"\n  npm install\n  npm install adm-zip better-sqlite3 axios node-fetch 2>\/dev\/null || true\n  echo \"All dependencies installed.\"\nfi\n\necho \"Installation complete. Start the server to run.\"",
+            "container": "ghcr.io\/parkervcp\/yolks:nodejs_20",
+            "entrypoint": "bash"
+        }
+    },
+    "variables": [
+        {
+            "name": "Git Repo URL",
+            "description": "GitHub repo to clone on install. Example: https://github.com/user/repo",
+            "env_variable": "GIT_REPO",
+            "default_value": "",
+            "user_viewable": 1,
+            "user_editable": 0,
+            "rules": "nullable|string"
+        },
+        {
+            "name": "Bot JS File",
+            "description": "The main JS file to start the bot",
+            "env_variable": "BOT_JS_FILE",
+            "default_value": "index.js",
+            "user_viewable": 1,
+            "user_editable": 0,
+            "rules": "required|string"
+        },
+        {
+            "name": "Max RAM MB",
+            "description": "Max memory for Node.js in MB",
+            "env_variable": "MAX_RAM",
+            "default_value": "1024",
+            "user_viewable": 1,
+            "user_editable": 1,
+            "rules": "required|numeric|min:256"
+        }
+    ]
+}

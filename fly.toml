@@ -1,0 +1,106 @@
+# fly.toml — Silent WolfBot · Fly.io deployment
+# Docs: https://fly.io/docs/reference/configuration/
+#
+# ─── DEPLOY STEPS (first time only) ────────────────────────────────────────────
+#  1. Install flyctl → https://fly.io/docs/hands-on/install-flyctl/
+#  2. fly auth login
+#  3. fly launch --no-deploy
+#     → YES to use this fly.toml   |   NO to Managed Postgres
+#  4. Create persistent volumes (session + database survive restarts):
+#       fly vol create wolfbot_data    --size 1 --region lad
+#       fly vol create wolfbot_session --size 1 --region lad
+#  5. Set the two secrets that can't live in this file (public repo):
+#       fly secrets set SESSION_ID="KLAUS MD:your-session-string-here"
+#       fly secrets set DATABASE_URL="postgres://user:pass@host:5432/db?sslmode=require"
+#  6. fly deploy
+#
+#  Every future deploy is just: fly deploy
+# ────────────────────────────────────────────────────────────────────────────────
+
+app            = 'silent-wolf-bot'
+primary_region = 'lad'
+kill_signal    = 'SIGINT'
+kill_timeout   = '30s'
+
+[build]
+
+# ─── Environment Variables ───────────────────────────────────────────────────
+# Non-sensitive vars live here — auto-applied on every deploy.
+# Sensitive vars (SESSION_ID, DATABASE_URL) must be set via:
+#   fly secrets set KEY="value"
+# because this file is public on GitHub.
+[env]
+  # ── Runtime ─────────────────────────────────────────────────────────────────
+  NODE_ENV = 'production'
+  PORT     = '3000'
+
+  # ── Bot identity (safe to commit — no credentials) ──────────────────────────
+  # REQUIRED: Your WhatsApp number in international format without +
+  # e.g. 2348012345678  |  254712345678
+  OWNER_NUMBER = ''
+
+  # OPTIONAL: Display name shown in menus and messages. Defaults to 'WOLFBOT'.
+  # Automatically updated when you use .setbotname
+  BOT_NAME = 'WOLFBOT'
+
+  # OPTIONAL: Command prefix (e.g. . or ! or ?). Defaults to '.'
+  # Automatically updated when you use .setprefix
+  BOT_PREFIX = '.'
+
+  # OPTIONAL: Bot mode — public | private | group | solo | sudo | super | buttons | channel
+  # Automatically updated when you use .setmode
+  BOT_MODE = 'public'
+
+  # OPTIONAL: Timezone for time/date display in menus
+  # e.g. Africa/Lagos | Africa/Nairobi | Asia/Kolkata | America/New_York
+  # Automatically updated when you use .settimezone
+  BOT_TIMEZONE = 'UTC'
+
+  # ── Pterodactyl panel (leave blank if not using panel commands) ──────────────
+  # OPTIONAL: Your Pterodactyl Application API key (ptlc_...)
+  PTERODACTYL_KEY = ''
+
+  # OPTIONAL: Your Pterodactyl panel URL (e.g. https://panel.example.com)
+  PTERODACTYL_URL = ''
+
+  # ── Paystack (leave blank if not using payment commands) ─────────────────────
+  # OPTIONAL: Your Paystack secret key (sk_live_... or sk_test_...)
+  PAYSTACK_KEY = ''
+
+# ─── HTTP Service (health check) ─────────────────────────────────────────────
+[http_service]
+  internal_port        = 3000
+  force_https          = true
+  auto_stop_machines   = 'off'
+  auto_start_machines  = true
+  min_machines_running = 1
+  processes            = ['app']
+
+  [http_service.concurrency]
+    type       = 'connections'
+    hard_limit = 25
+    soft_limit = 20
+
+# ─── Machine size ─────────────────────────────────────────────────────────────
+# 1gb is required — the start command uses --max-old-space-size=1024
+[[vm]]
+  memory   = '1gb'
+  cpu_kind = 'shared'
+  cpus     = 1
+
+# ─── Persistent volumes ───────────────────────────────────────────────────────
+# Create these once before first deploy:
+#   fly vol create wolfbot_data    --size 1 --region lad
+#   fly vol create wolfbot_session --size 1 --region lad
+[[mounts]]
+  source                     = 'wolfbot_data'
+  destination                = '/app/data'
+  initial_size               = '1gb'
+  auto_extend_size_threshold = 80
+  auto_extend_size_increment = '1gb'
+  auto_extend_size_limit     = '10gb'
+
+[[mounts]]
+  source      = 'wolfbot_session'
+  destination = '/app/session'
+  initial_size = '512mb'

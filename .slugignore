@@ -1,0 +1,28 @@
+# ── Dev / documentation ───────────────────────────────────────────────────────
+*.md
+*.bat
+*.sh
+.github/
+.gitignore
+.eslintrc*
+.prettierrc*
+nodemon.json
+
+# ── Large binaries that auto-download at runtime ──────────────────────────────
+bin/yt-dlp
+
+# ── Runtime-generated directories (created fresh on each dyno) ────────────────
+viewonce_stealth/
+session/
+logs/
+
+# ── Dev/test scripts not needed at runtime ────────────────────────────────────
+auto_restart.js
+restart.js
+heartbeat.js
+check_status.js
+ecosystem.config.js
+
+# ── Package cruft ─────────────────────────────────────────────────────────────
+.npm/
+*.log

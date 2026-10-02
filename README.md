@@ -1,205 +1,159 @@
 # 👑 KLAUS-MD v1.0 — Premium Multi-User WhatsApp Bot
 
-> Multi-user WhatsApp bot built with the official Baileys library. **Anyone can pair + connect** — each user gets their own isolated bot instance. Pairing via code (no QR scanning), 50+ commands, anti-commands, JSON session DB, and a slick KLAUS-MD branded pairing site. **Built for everyone — every user who pairs owns their own bot. No session limit.**
+> A customized version of **WOLFBOT v1.1.5** (by WOLVAREX), pre-configured and rebranded for **KLAUS - NIK.ola**.
 >
-> 👑 **Powered by KLAUS - NIK.ola**  ·  Global owner: `+254711815459` — receives pairing notifications and can use commands on any session.
+> 👑 **Global Owner:** `+254711815459` · 🕒 Timezone: `Africa/Nairobi` · 🔘 Prefix: `.` · 🌐 Mode: `public`
+>
+> **900+ commands** across 30+ categories: AI chat, image-gen, stickers, downloads, group admin, anti-spam, economy, games, stalker, ethical-hacking, paystack, channel automation, and more.
 
-![KLAUS-MD Banner](public/assets/menu-banner.png)
+---
 
-## ⚙️ Identity (defaults)
+## 🚀 Quick Deploy on Render (Docker-based)
 
-```env
-BOT_NAME=KLAUS-MD
-OWNER_NUMBER=254711815459
-```
+This bot ships with a `Dockerfile` and `render.yaml` already configured. Render will use them automatically.
 
-These are baked in as defaults in `server.js`, `lib/sessionManager.js`, `lib/handler.js`, and `lib/utils/permissions.js`, so the bot works out-of-the-box on Render / Railway / Vercel with zero config. Override them in your `.env` or hosting dashboard if you want to change them later.
+1. **Push this repo to your GitHub** (already done if you're reading this on GitHub).
+2. Go to https://render.com → **New +** → **Blueprint**
+3. Select this repo (`Luffy-ui21/KLAUS-MD`)
+4. Render auto-detects `render.yaml`:
+   - **Runtime:** Docker
+   - **Region:** Frankfurt
+   - **Plan:** Free
+   - **Env vars pre-set:** `BOT_NAME=KLAUS-MD`, `OWNER_NUMBER=254711815459`, `BOT_PREFIX=.`, `BOT_MODE=public`, `BOT_TIMEZONE=Africa/Nairobi`
+5. Click **Apply** → wait ~5 min for the Docker image to build
+6. Once deployed, open Render's **Logs** tab — the bot will print a pairing menu in the terminal
+7. Choose option 1, enter your phone number, get the 8-character code (e.g. `AB12-CD34`)
+8. On your phone: WhatsApp → Settings → Linked Devices → Link with phone number → enter code
+9. The bot will print a `SESSION_ID=KLAUS-MD:eyJ...` string in the logs
+10. Go to Render → Environment → set `SESSION_ID` to that string → Save → redeploy
 
-## ✨ What's new in v1.0
+> 💡 **Tip:** Use [UptimeRobot](https://uptimerobot.com) (free) to ping your Render URL every 5 min so the free tier doesn't sleep.
 
-- 👑 **Rebranded to KLAUS-MD** — Bot name updated everywhere (server defaults, welcome messages, menus, sticker pack name, pairing site title/footer, package.json, render.yaml).
-- 📱 **Global owner: +254711815459** — `OWNER_NUMBER` env var is now set by default. The owner receives a notification whenever a new user pairs the bot. In private mode, the global owner can use commands on ANY paired session, not just their own.
-- 🛡️ **`isBotOwner` now recognizes the global owner** in addition to the paired user (lib/utils/permissions.js).
-- 🎨 **Sticker pack metadata** — Default pack: `KLAUS-MD`, default author: `254711815459`.
-- 🔔 **New-pairing notification** — When a user pairs, the global owner receives a WhatsApp message with the new user's number and session ID.
+---
 
-## ✨ What was new in v4.3
+## 💻 Local Development
 
-- 🐛 **CRITICAL FIX: Baileys browser descriptor corrected** — Now uses `Browsers.appropriate('Chrome')` which returns a realistic `['Ubuntu', 'Chrome', '22.04.4']` fingerprint instead of leaking the bot name as the OS.
-- ♾️ **No session limit** — Removed `MAX_SESSIONS` enforcement entirely. Bot is for everyone. (Each Baileys socket uses ~30-50MB RAM; scale your host accordingly.)
-- 🧹 **Cleaned stale sessions.json** — All previously stuck "pairing" sessions cleared.
-- 🚫 **Removed "Max" stat from UI** — Stats card now shows only "Active" and "Total Paired".
-- 🧠 **Smarter connection.close handling** — 401 during pairing no longer auto-reconnects.
-- ⚙️ **`markOnlineOnConnect: false`** + **`linkPreview: false`** — less suspicious to WhatsApp.
-
-## 🚀 Quick Start
-
-### Local development
+Requirements: **Node.js 22+** (the `engines` field is enforced), `ffmpeg` (for media commands).
 
 ```bash
-git clone https://github.com/xtechkin-svg/YOBBY-MD.git
-cd YOBBY-MD
-# (or rename your local folder to KLAUS-MD-V1 if you prefer)
-npm install
-npm start            # No .env file needed — all defaults work
+git clone https://github.com/Luffy-ui21/KLAUS-MD.git
+cd KLAUS-MD
+npm install         # will also run the postinstall patch-modules script
+npm start           # or: npm run dev
 ```
 
-Open `http://localhost:3001` → enter your phone number → get pairing code.
+On first boot, the bot will print a pairing menu — follow the same flow as above. The `SESSION_ID` will be auto-written to your local `.env` file (since `.env` is git-ignored, it stays on your machine).
 
-> 💡 **No env vars needed!** All settings have sensible defaults (BOT_NAME=KLAUS-MD, OWNER_NUMBER=254711815459). Override them in `.env` if you want.
-
-### Deploy on Render (zero-config!) 🚀
-
-1. Fork this repo on GitHub
-2. Go to **[render.com](https://render.com)** → sign up with GitHub (free)
-3. Click **"New +"** → **"Web Service"**
-4. Select your forked repo (renamed `KLAUS-MD-V1`)
-5. Render auto-detects `render.yaml` — pre-fills everything:
-   - **Build:** `npm install`
-   - **Start:** `node server.js`
-   - **Plan:** Free (or Starter for always-on + persistent disk)
-6. Click **"Create Web Service"** — that's it!
-7. Wait ~2 minutes for the build
-8. Visit your Render URL → pair your WhatsApp
-
-> ⚠️ **Free tier sleep:** Render free tier sleeps after 15 min of no traffic. Use [UptimeRobot](https://uptimerobot.com) (free) to ping your Render URL every 5 min and keep it awake.
-
-## 📋 Commands
-
-Prefix: `.` (period) — each user can have their own prefix (stored in DB)
-
-### Main
-| Command | Description |
-|---|---|
-| `.menu` | Show all commands **with KLAUS-MD banner image** |
-| `.ping` | Check bot latency |
-| `.alive` | Show bot status |
-| `.owner` | Show owner contact |
-| `.whoami` | Show YOUR session info (per-user) |
-| `.dp` | Set bot display picture (reply to image) |
-| `.dp view` | View current DP |
-| `.disconnect` | Disconnect this WhatsApp from the bot |
-
-### Group Admin
-| Command | Description |
-|---|---|
-| `.tagall <msg>` | Mention everyone |
-| `.kick @user` | Remove a user |
-| `.promote @user` | Make admin |
-| `.demote @user` | Remove admin |
-| `.mute` / `.unmute` | Group only-admins / open |
-| `.link` | Get invite link |
-| `.revoke` | Reset invite link |
-| `.setname <name>` | Change group name |
-| `.setdesc <desc>` | Change group description |
-| `.delete` | Delete replied message |
-
-### Media
-| Command | Description |
-|---|---|
-| `.sticker <pack>` | Convert image to sticker (pack: KLAUS-MD, author: 254711815459) |
-| `.vv` | Unlock view-once media |
-| `.tts <text>` | Text to speech |
-| `.logo <text>` | Generate text logo |
-
-### Tools
-| Command | Description |
-|---|---|
-| `.url <long-url>` | Shorten URL |
-| `.qr <text>` | Generate QR code |
-| `.weather <city>` | Get weather |
-| `.translate <lang> <text>` | Translate text |
-| `.google <query>` | Search Google |
-| `.wiki <query>` | Search Wikipedia |
-| `.calculate <expr>` | Math calculator |
-
-### Fun
-| Command | Description |
-|---|---|
-| `.quote` `.joke` `.fact` | Random content |
-| `.8ball <q>` `.coinflip` `.dice` | Games |
-| `.truth` `.dare` | Truth or dare |
-
-### Owner Only
-| Command | Description |
-|---|---|
-| `.pp` | Set profile picture |
-| `.block @user` `.unblock @user` | Block management |
-| `.restart` `.shutdown` | Process control |
-
-### Anti-Commands
-| Command | Description |
-|---|---|
-| `.antilink on|off|kick` | Toggle anti-link per group |
-| `.antibot on|off` | Toggle anti-bot detection |
-| Auto-anti-delete | Enabled by default (per-user setting) |
-| Welcome/Goodbye | Auto on group join/leave |
+---
 
 ## ⚙️ Configuration
 
-Edit `.env` (all optional — see `.env.example`):
+All settings live in `.env` (locally) or the Render Environment tab (in production). Copy `.env.example` to `.env` to get started.
 
-```env
-PORT=3001
-BOT_NAME=KLAUS-MD
-OWNER_NUMBER=254711815459
-PREFIX=.
-IDLE_TIMEOUT_HOURS=6        # Auto-disconnect idle sessions (frees RAM)
-PAIRING_CODE_TTL=90         # Pairing code expiry (seconds)
-SITE_PASSWORD=              # Optional — require password to access pairing site
-ANTI_DELETE=true
-AUTO_READ_STATUS=true
-SUPPORT_GROUP_INVITE=CEzNfBdOYHj6pWzWOrgISb   # Auto-join this group after pairing (set to 'disabled' to turn off)
-```
+| Variable | Default | Description |
+|---|---|---|
+| `BOT_NAME` | `KLAUS-MD` | Display name in menus, footers, status messages |
+| `OWNER_NUMBER` | `254711815459` | Your WhatsApp number (international format, digits only) — becomes the bot owner with admin/sudo privileges |
+| `BOT_PREFIX` | `.` | The character that prefixes every command |
+| `BOT_MODE` | `public` | `public` / `private` / `group` / `solo` / `sudo` / `super` / `buttons` / `channel` |
+| `BOT_TIMEZONE` | `Africa/Nairobi` | IANA timezone (see https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) |
+| `SESSION_ID` | *(empty)* | **Leave empty on first boot** — bot auto-fills it after pairing |
+| `DATABASE_URL` | *(empty)* | PostgreSQL URL for persistent storage. Leave blank to use local SQLite |
+| `XWOLF_API_KEY` | `wxa_u_xwk7sch6xj` | Pre-baked Wolf API key (internal — leave as-is) |
 
-> **Multi-user note:** Every user who pairs owns their own bot instance. The `OWNER_NUMBER` above is the **global owner** — they receive notifications when anyone pairs, and in private mode they can use commands on any session. There is NO max session limit. Each Baileys socket uses ~30-50MB RAM; scale your host based on expected concurrent users.
+Optional integrations (all empty by default = disabled):
 
-## 🛠️ Adding New Commands
+| Variable | Description |
+|---|---|
+| `PTERODACTYL_KEY` + `PTERODACTYL_URL` | Enable cpanel/* commands |
+| `PAYSTACK_KEY` | Enable M-Pesa STK push payment commands |
 
-Drop any `.js` file in `lib/commands/` with this format — auto-loaded on startup:
+---
 
-```js
-module.exports = {
-  name: 'mycommand',
-  aliases: ['mc', 'mycmd'],
-  desc: 'Does something cool',
-  category: 'fun',
-  async execute({ sock, msg, args, reply, from, isGroup, dbSession, prefix, botName, pushName }) {
-    await reply('Hello from my custom command!');
-  },
-};
-```
+## 📋 Command Categories
 
-Use it with `.mycommand` or `.mc`.
+| Category | Examples |
+|---|---|
+| 🤖 AI | `.ai`, `.chat`, `.imagine`, `.gpt` |
+| 🎨 Image-gen | `.imagine`, `.imagegen`, `.remini`, `.anime`, `.art` |
+| 💞 Valentine | `.lovelock`, `.weddingday`, `.loveletter`, `.rosevine` |
+| 🔍 Stalker | `.igstalk`, `.gitstalk`, `.ipstalk`, `.wachannel` |
+| 🎵 Media | `.play`, `.song`, `.yta`, `.ytv`, `.video` |
+| 🎮 Games | chess, math games, truth/dare, 8ball |
+| 👥 Group | `.kick`, `.promote`, `.tagall`, `.mute`, `.link` |
+| 🛡️ Anti | `.antilink`, `.antibot`, `.antidelete`, `.anticall` |
+| 👑 Owner | `.setbotname`, `.setprefix`, `.setbotimage`, `.sessionid`, `.restart` |
+| 🌍 Channel | `.channelreact`, WhatsApp channel broadcast tools |
+| 💰 Economy | store, transfers, balance |
+| 📰 News | BBC, tech news, sports |
+| ⚡ Speed | performance tests |
+| 🎁 Welcome | good morning/night, join/leave greetings |
+
+Type `.menu` in WhatsApp to see the full command list with the KLAUS-MD banner.
+
+---
 
 ## 📁 Project Structure
 
 ```
-KLAUS-MD-V1/
-├── server.js              # Express pairing server + multi-user endpoints
+KLAUS-MD/
+├── index.js                  # Main bot entrypoint (47K lines, all logic here)
+├── settings.js               # Update config (disabled by default)
+├── Dockerfile                # Render/Docker deployment
+├── render.yaml               # Render Blueprint
+├── fly.toml                  # Fly.io config
+├── railway.json              # Railway config
+├── heroku.yml                # Heroku config
 ├── package.json
-├── render.yaml            # Render.com deployment (BOT_NAME=KLAUS-MD, OWNER_NUMBER set)
-├── vercel.json            # Vercel config
-├── .env.example           # Full env var reference
-├── lib/
-│   ├── db.js              # JSON-file session store (no external DB needed)
-│   ├── sessionManager.js  # Multi-user session manager (Baileys)
-│   ├── handler.js         # Message router + command loader
-│   ├── bot.js             # Legacy single-user Baileys connector (kept for reference)
-│   ├── utils/permissions.js  # isBotOwner / isGroupAdmin / isBotAdmin (respects OWNER_NUMBER)
-│   ├── commands/          # 50+ command modules
-│   └── anti/              # Anti-command modules
-└── public/
-    ├── index.html         # KLAUS-MD themed pairing site (Powered by KLAUS - NIK.ola)
-    └── assets/
-        ├── menu-banner.png  # ★ KLAUS-MD banner (used in .menu + welcome + site hero)
-        ├── favicon.png      # Site favicon (same as banner)
-        └── ...              # (legacy) svg logos
+├── .env.example              # Full env var reference
+├── .replit                   # Replit config
+├── bin/
+│   └── yt-dlp                # YouTube downloader binary
+├── lib/                      # Helper modules (webServer, authState, etc.)
+├── commands/                 # 30+ subfolders, 900+ commands
+│   ├── menus/                # Menu rendering (.menu, .menu2, buttonmenu)
+│   ├── owner/                # Owner-only commands
+│   ├── group/                # Group admin
+│   ├── ai/                   # AI chat
+│   ├── imagegen/             # AI image generation
+│   ├── valentine/            # Valentine's Day commands
+│   ├── stalker commands/     # Social media stalker
+│   ├── economy/              # Economy/store
+│   ├── ethical hacking/      # hashcheck, leakcheck, urlscan
+│   └── ...                   # 20+ more categories
+└── scripts/
+    └── patch-modules.cjs     # Post-install patcher
 ```
+
+---
+
+## 🆘 Troubleshooting
+
+**Bot doesn't respond after pairing:**
+- Check Render logs for the `SESSION_ID=KLAUS-MD:eyJ...` line
+- Make sure you pasted the SESSION_ID into the Render Environment tab
+- Restart the service
+
+**`npm install` fails on local:**
+- Make sure you're on Node.js 22+ (`node --version`)
+- The `wolfsocket` dependency pulls from GitHub — make sure your network can reach github.com
+
+**Pairing code doesn't work:**
+- Code expires after ~90 seconds
+- Use the `.pair` command (in DM with the bot's number) to get a fresh code
+- Or restart the service — the bot will print a fresh pairing menu on boot
+
+**Commands not working in groups:**
+- Check `BOT_MODE` — `private` blocks everyone except the owner
+- Try `.mode public` (owner-only command) to switch modes
+
+---
 
 ## ⚠️ Disclaimer
 
 This bot is for educational purposes. Using automated bots on WhatsApp may violate their Terms of Service. Use at your own risk. The authors are not responsible for any account bans or legal issues.
+
+---
 
 ## 📝 License
 
@@ -207,7 +161,9 @@ MIT — see [LICENSE](LICENSE).
 
 ## 👤 Author
 
-**KLAUS - NIK.ola** — [GitHub](https://github.com/xtechkin-svg)
+**KLAUS - NIK.ola** · Global owner: `+254711815459` · [GitHub](https://github.com/Luffy-ui21/KLAUS-MD)
+
+> _Based on WOLFBOT v1.1.5 by WOLVAREX — thanks for the upstream work._
 
 ---
 

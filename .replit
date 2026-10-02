@@ -1,0 +1,49 @@
+modules = ["nodejs-20", "web"]
+[agent]
+expertMode = true
+stack = "BEST_EFFORT_FALLBACK"
+
+[nix]
+channel = "stable-25_05"
+packages = ["ffmpeg", "libuuid", "pkg-config", "cairo", "pango", "giflib", "libjpeg", "librsvg", "pixman", "python3", "gnumake", "gcc"]
+
+[workflows]
+runButton = "Project"
+
+[[workflows.workflow]]
+name = "Project"
+mode = "parallel"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "WhatsApp Bot"
+
+[[workflows.workflow]]
+name = "WhatsApp Bot"
+author = "agent"
+
+[workflows.workflow.metadata]
+outputType = "console"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "node --no-warnings --expose-gc --max-old-space-size=1024 --max-semi-space-size=64 --experimental-global-webcrypto index.js"
+
+[[ports]]
+localPort = 3000
+externalPort = 80
+
+[[ports]]
+localPort = 3001
+externalPort = 3001
+
+[userenv]
+
+[userenv.shared]
+BOT_PREFIX = "."
+BOT_MODE = "public"
+BOT_NAME = "KLASU MD"
+BOT_TIMEZONE = "Africa/Nairobi"
+OWNER_NUMBER = "254711815459"
+XWOLF_API_KEY = "wxa_u_xwk7sch6xj"
