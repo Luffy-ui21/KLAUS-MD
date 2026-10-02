@@ -1,0 +1,44 @@
+# Dependencies
+node_modules/
+package-lock.json
+yarn.lock
+
+# Environment
+.env
+.env.local
+.env.production
+
+# Auth state (sensitive — WhatsApp session)
+auth_state/
+auth_state_*/
+*.session
+*.auth
+
+# Prisma database
+prisma/*.db
+prisma/*.db-journal
+prisma/boboh.db
+prisma/migrations/
+
+# User-uploaded DPs
+public/dp/
+
+# Anti-command DBs (per-group settings — user-generated)
+anti_link_db.json
+anti_bot_db.json
+welcome_db.json
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Vercel
+.ver/
